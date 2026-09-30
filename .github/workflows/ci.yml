@@ -1,0 +1,39 @@
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+
+      # Step 1: Download repository code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up MinGW
+      - name: Set up MinGW
+        uses: egor-tensin/setup-mingw@v2
+
+      # Step 3: Check compiler
+      - name: Check GCC
+        run: gcc --version
+
+      # Step 4: Check Make
+      - name: Check Make
+        run: mingw32-make --version
+
+      # Step 5: Compile main application
+      - name: Compile Application
+        run: mingw32-make all
+
+      # Step 6: Run test suite
+      - name: Run Test Cases
+        run: mingw32-make test
+
+      # Step 7: Clean generated files
+      - name: Clean
+        run: mingw32-make clean
